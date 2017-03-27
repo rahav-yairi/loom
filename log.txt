@@ -4,3 +4,6 @@
 02-01-2012 10:14:00 George is eating at a diner
 03-01-2012 10:14:00 Naomi is eating at a diner
 03-01-2015 10:14:00 Rahav is eating   		at a diner
+03-01-2015 10:14:00 A
+03-01-2015 10:14:00 B
+03-01-2015 10:14:00 C
