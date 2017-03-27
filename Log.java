@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Stream;
 
+/*
+Appearance keeps the data that is unique for each instance of 
+pattern instantiation: the timestamp and the word that replaces the wildcard
+*/
 class Appearance {
 
     public Appearance(String word, Date date) {
@@ -29,17 +33,32 @@ class Appearance {
     Date date;
 }
 
+/*
+Log is the main class. it keeps the data structure for detecting used patterns. 
+The pattern strings are kept in the hash table 'patterns'. The key of each entry 
+is the pattern string, the value is a list of actual appearances
+*/
 public class Log {
 
     static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     static HashMap<String, ArrayList<Appearance>> patterns = new HashMap<>();
 
+    /*
+    reading the input file. Each line is a record, records are added to the hash table 
+    by calling 'addRecord'
+    */
     static public void readLog(String logFile) throws IOException {
         try (Stream<String> istream = Files.lines(Paths.get(logFile))) {
             istream.forEach(Log::addRecord);
         }
     }
 
+    /*
+    addRecord creates all the possible pattern strings out of a record by replacing in turn
+    every word in the sentence with a wildcard. Wildcards are denoted as "%s"
+    If the pattern string is not already in the hash table the method adds it. 
+    For each pattern a new Appearance object is created and added to the appearance list
+    */
     static private void addRecord(String record) {
 
         // removing unnecessary white spaces 
@@ -64,6 +83,10 @@ public class Log {
         }
     }
 
+    /*
+    writeGroups finds all the templates that have more than one appearance. All the appearances are 
+    written to the output file followed by the list of word that replaced the wildcard
+    */
     static public void writeGroups(String fileName) throws FileNotFoundException, IOException {
 
         FileOutputStream ostream = new FileOutputStream(new File(fileName), false);
@@ -79,6 +102,10 @@ public class Log {
                     continue;
                 }
 
+                /* 
+                saving the wildcard replacements in an array of strings
+                
+                */
                 String[] changedWords = new String[size];
 
                 for (int i = 0; i < size; i++) {
